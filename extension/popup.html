@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PhishGuard Gmail Protection</title>
+  <style>
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      background: #080E19;
+      color: #F4F7FB;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      background: rgba(0, 230, 160, 0.15);
+      border: 1px solid rgba(0, 230, 160, 0.3);
+      color: #00E6A0;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .card {
+      background: #142238;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 11px;
+      text-decoration: none;
+      background: #00D4FF;
+      color: #080E19;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #00E6A0;
+    }
+    .footer {
+      font-size: 9px;
+      text-align: center;
+      color: #9BAAC0;
+      margin-top: 8px;
+    }
+    .scan-status {
+      margin-top: 6px;
+      color: #C4D0DF;
+      font-size: 10px;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">
+      <span>🛡️</span>
+      <span>PHISH<strong style="color: #00D4FF;">GUARD</strong></span>
+    </div>
+    <div id="status-badge" class="status-pill">
+      <span style="width: 6px; height: 6px; background: #00E6A0; border-radius: 50%;"></span>
+      <span>PROTECTION</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong style="color: #00D4FF; display: block; margin-bottom: 4px;">Gmail Inbox Monitor</strong>
+    Inbox messages are checked in batches and labeled in Gmail. Opening a message shows its detailed verdict. A low-risk result is not a guarantee of safety.
+  </div>
+
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span>Backend Sensor:</span>
+      <strong id="backend-status" style="color: #00E6A0; font-family: monospace;">Checking…</strong>
+    </div>
+    <div id="inbox-scan-status" class="scan-status">Checking Gmail connection…</div>
+  </div>
+
+  <button id="btn-scan-inbox" class="btn" type="button" style="margin-bottom: 8px;">
+    Scan Inbox Now
+  </button>
+
+  <a id="btn-open-dashboard" href="http://localhost:5173" target="_blank" class="btn">
+    Launch SOC Command Center
+  </a>
+
+  <div class="footer">
+    Inbox-only heuristic monitoring &bull; v1.1.0
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

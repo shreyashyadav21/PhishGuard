@@ -1,0 +1,31 @@
+{
+  "timeZone": "Etc/UTC",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
+    "https://www.googleapis.com/auth/script.external_request"
+  ],
+  "addOns": {
+    "common": {
+      "name": "PhishGuard Gmail Protection",
+      "logoUrl": "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
+      "layoutProperties": {
+        "primaryColor": "#0F172A",
+        "secondaryColor": "#C7FF5D"
+      },
+      "homepageTrigger": {
+        "runFunction": "buildHomepageCard"
+      }
+    },
+    "gmail": {
+      "contextualTriggers": [
+        {
+          "unconditional": {},
+          "onTriggerFunction": "onGmailMessageOpen"
+        }
+      ]
+    }
+  }
+}

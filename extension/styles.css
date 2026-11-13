@@ -1,0 +1,253 @@
+/* PhishGuard In-Gmail Warning Banner Styles */
+.phishguard-banner-container {
+  position: fixed !important;
+  top: 150px;
+  right: 16px;
+  width: min(420px, calc(100vw - 32px));
+  max-height: min(480px, calc(100vh - 180px));
+  box-sizing: border-box;
+  margin: 0;
+  overflow: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 2147483647 !important;
+}
+
+.phishguard-banner-green {
+  background: #0d281e;
+  border: 1px solid #00E6A0;
+  color: #e6fcf5;
+}
+
+.phishguard-banner-muted {
+  background: #18212f;
+  border: 1px solid #64748b;
+  color: #e2e8f0;
+}
+
+.phishguard-banner-yellow {
+  background: #2b210a;
+  border: 1px solid #FFB020;
+  color: #fff9db;
+}
+
+.phishguard-banner-orange {
+  background: #331e08;
+  border: 1px solid #FF8C00;
+  color: #fff4e6;
+}
+
+.phishguard-banner-red {
+  background: #340c13;
+  border: 1px solid #FF4D67;
+  color: #ffe3e3;
+}
+
+.phishguard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phishguard-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.phishguard-score-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.phishguard-banner-green .phishguard-score-badge {
+  background: #00E6A0;
+  color: #080E19;
+}
+
+.phishguard-banner-yellow .phishguard-score-badge {
+  background: #FFB020;
+  color: #080E19;
+}
+
+.phishguard-banner-orange .phishguard-score-badge {
+  background: #FF8C00;
+  color: #080E19;
+}
+
+.phishguard-banner-red .phishguard-score-badge {
+  background: #FF4D67;
+  color: #080E19;
+}
+
+.phishguard-body {
+  padding: 12px 16px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.phishguard-verdict {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.phishguard-summary {
+  margin: 6px 0 0;
+  font-size: 11px;
+}
+
+.phishguard-indicators-list {
+  margin: 8px 0;
+  padding-left: 18px;
+  font-size: 11px;
+}
+
+.phishguard-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phishguard-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.phishguard-btn-keep {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.phishguard-btn-keep:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.phishguard-btn-quarantine {
+  background: #FFB020;
+  color: #080E19;
+}
+.phishguard-btn-quarantine:hover {
+  background: #ffa000;
+}
+
+.phishguard-btn-trash {
+  background: #FF4D67;
+  color: #fff;
+}
+.phishguard-btn-trash:hover {
+  background: #e0314b;
+}
+
+.phishguard-disclaimer {
+  font-size: 10px;
+  opacity: 0.65;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.phishguard-inbox-verdict {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 700 9px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: 0.25px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.phishguard-inbox-low {
+  color: #087c5a;
+  background: #e6fcf5;
+}
+
+.phishguard-inbox-suspicious {
+  color: #8a5a00;
+  background: #fff3bf;
+}
+
+.phishguard-inbox-high,
+.phishguard-inbox-critical {
+  color: #b42338;
+  background: #ffe3e3;
+}
+
+.phishguard-inbox-unscanned {
+  color: #526174;
+  background: #edf2f7;
+}
+
+.phishguard-inbox-monitor {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  max-width: 360px;
+  padding: 9px 13px;
+  border: 1px solid #087c5a;
+  border-radius: 8px;
+  background: #e6fcf5;
+  color: #075c44;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+  font: 600 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: none;
+}
+
+.phishguard-inbox-monitor-error {
+  border-color: #b42338;
+  background: #ffe3e3;
+  color: #8b1729;
+}
+
+@media (max-width: 600px) {
+  .phishguard-banner-container {
+    top: 112px;
+    right: 8px;
+    width: calc(100vw - 16px);
+    max-height: calc(100vh - 128px);
+  }
+
+  .phishguard-header {
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .phishguard-logo {
+    font-size: 11px;
+  }
+
+  .phishguard-body {
+    padding: 10px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phishguard-banner-container {
+    transition: none;
+  }
+}
+
