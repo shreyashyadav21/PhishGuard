@@ -7,12 +7,18 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
+cors_origins = os.getenv("CORS_ORIGINS")
+
 class Settings(BaseModel):
     APP_NAME: str = "PhishGuard"
     APP_VERSION: str = "2.5.0"
     DETECTION_ENGINE_VERSION: str = "3.2.0-ENTERPRISE"
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./phishguard.db")
     CORS_ORIGINS: list[str] = [
+        origin.strip()
+        for origin in cors_origins.split(",")
+        if origin.strip()
+    ] if cors_origins else [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",

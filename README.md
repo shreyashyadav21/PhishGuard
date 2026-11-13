@@ -112,6 +112,18 @@ After changing extension files, open the browser's extensions page, reload Phish
 
 Follow [GMAIL_ADDON_SETUP.md](documentation/GMAIL_ADDON_SETUP.md) to deploy the backend over public HTTPS, configure the add-on API key, and test-install the Gmail Workspace add-on. Gmail requires opening the add-on panel to display its card; it cannot force an automatic popup.
 
+## ☁️ Deploy to Render
+
+Deploy the backend and frontend as separate Render services:
+
+1. Create a **Web Service** from this repository with **Root Directory** `backend`, **Build Command** `pip install -r requirements.txt`, and **Start Command** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+2. Create a **Static Site** from this repository with **Root Directory** `frontend`, **Build Command** `npm ci && npm run build`, and **Publish Directory** `dist`.
+3. Set the static site's `VITE_API_BASE_URL` to `https://<your-backend>.onrender.com/api`. In the static site's **Redirects/Rewrites**, add a rewrite from `/*` to `/index.html` so React Router routes load on refresh.
+4. Set the backend's `CORS_ORIGINS` to `https://<your-frontend>.onrender.com`. Set `ENCRYPTION_SECRET` to a long, unique secret. Add Google OAuth and other integration variables only if those features are needed; update `GOOGLE_REDIRECT_URI` to the backend's public OAuth callback URL.
+5. Configure a persistent disk for the backend and set `DATABASE_URL` to `sqlite:////var/data/phishguard.db` (mount the disk at `/var/data`). Render persistent disks require a paid web service; without one, SQLite data can be lost when the service restarts or redeploys.
+
+The free web service may spin down while idle, so the first request can take longer. Gmail integrations also require their OAuth redirect URI and Google Cloud settings to use the deployed HTTPS backend URL.
+
 ---
 
 ## 🧪 Automated Pytest Verification
