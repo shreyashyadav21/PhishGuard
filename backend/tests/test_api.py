@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from app.database import Base, get_db
 from app.models import ConnectedAccount
+from app import main as main_module
 from app.main import app
 from app.config import settings
 from app.services.gmail_service import _gmail_api_error, encrypt_token
@@ -19,6 +20,14 @@ def test_health_endpoint():
     data = response.json()
     assert data["status"] == "healthy"
     assert "detection_engine_version" in data
+
+def test_frontend_routes_serve_built_app_and_keep_api_404s(monkeypatch, tmp_path):
+    (tmp_path / "index.html").write_text("<html>PhishGuard UI</html>")
+    monkeypatch.setattr(main_module, "FRONTEND_DIST", tmp_path)
+
+    assert "PhishGuard UI" in client.get("/").text
+    assert "PhishGuard UI" in client.get("/settings").text
+    assert client.get("/api/not-a-route").status_code == 404
 
 def test_url_scan_endpoint():
     response = client.post("/api/scan/url", json={"url": "http://paypa1-verify-account.top/login"})

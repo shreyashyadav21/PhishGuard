@@ -114,15 +114,15 @@ Follow [GMAIL_ADDON_SETUP.md](documentation/GMAIL_ADDON_SETUP.md) to deploy the 
 
 ## ☁️ Deploy to Render
 
-Deploy the backend and frontend as separate Render services:
+Deploy the backend and frontend together as one Render Web Service:
 
-1. Create a **Web Service** from this repository with **Root Directory** `backend`, **Build Command** `pip install -r requirements.txt`, and **Start Command** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-2. Create a **Static Site** from this repository with **Root Directory** `frontend`, **Build Command** `npm ci && npm run build`, and **Publish Directory** `dist`.
-3. Set the static site's `VITE_API_BASE_URL` to `https://<your-backend>.onrender.com/api`. In the static site's **Redirects/Rewrites**, add a rewrite from `/*` to `/index.html` so React Router routes load on refresh.
-4. Set the backend's `CORS_ORIGINS` to `https://<your-frontend>.onrender.com`. Set `ENCRYPTION_SECRET` to a long, unique secret. Add Google OAuth and other integration variables only if those features are needed; update `GOOGLE_REDIRECT_URI` to the backend's public OAuth callback URL.
-5. Configure a persistent disk for the backend and set `DATABASE_URL` to `sqlite:////var/data/phishguard.db` (mount the disk at `/var/data`). Render persistent disks require a paid web service; without one, SQLite data can be lost when the service restarts or redeploys.
+1. Create a **Web Service** from this repository. Leave **Root Directory** blank (repository root).
+2. Set **Build Command** to `pip install -r backend/requirements.txt && npm --prefix frontend ci && npm --prefix frontend run build`.
+3. Set **Start Command** to `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+4. Set `ENCRYPTION_SECRET` to a long, unique secret. Add Google OAuth and other integration variables only if those features are needed; update `GOOGLE_REDIRECT_URI` to `https://<your-service>.onrender.com/api/gmail/oauth/callback`.
+5. To persist SQLite data, configure a disk mounted at `/var/data` and set `DATABASE_URL` to `sqlite:////var/data/phishguard.db`. Render persistent disks require a paid web service; without one, SQLite data can be lost when the service restarts or redeploys.
 
-The free web service may spin down while idle, so the first request can take longer. Gmail integrations also require their OAuth redirect URI and Google Cloud settings to use the deployed HTTPS backend URL.
+The backend serves the built frontend at `/` and continues to expose the API at `/api` and Swagger docs at `/docs`. The free web service may spin down while idle, so the first request can take longer.
 
 ---
 
