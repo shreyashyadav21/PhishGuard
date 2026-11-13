@@ -122,10 +122,26 @@ Deploy the backend and frontend together as one Render Web Service:
 1. Create a **Web Service** from this repository. Leave **Root Directory** blank (repository root).
 2. Set **Build Command** to `pip install -r backend/requirements.txt && npm --prefix frontend ci && npm --prefix frontend run build`.
 3. Set **Start Command** to `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-4. Set `ENCRYPTION_SECRET` to a long, unique secret. Add Google OAuth and other integration variables only if those features are needed; update `GOOGLE_REDIRECT_URI` to `https://<your-service>.onrender.com/api/gmail/oauth/callback`.
+4. Set `ENCRYPTION_SECRET` to a long, unique secret. Add Google OAuth and other integration variables only if those features are needed; set the Google OAuth authorized redirect URI to `https://<your-service>.onrender.com/gmail-connect`.
 5. To persist SQLite data, configure a disk mounted at `/var/data` and set `DATABASE_URL` to `sqlite:////var/data/phishguard.db`. Render persistent disks require a paid web service; without one, SQLite data can be lost when the service restarts or redeploys.
 
 The backend serves the built frontend at `/` and continues to expose the API at `/api` and Swagger docs at `/docs`. The free web service may spin down while idle, so the first request can take longer.
+
+## Deploy to Vercel with Neon
+
+Vercel runs the FastAPI backend as a Python Function and serves the React frontend from the same domain. Neon PostgreSQL provides persistent storage; SQLite is not suitable for Vercel Functions.
+
+1. Create a Neon PostgreSQL database and copy its pooled connection string.
+2. Import this repository into Vercel with the repository root as the project root. The root `pyproject.toml` selects the FastAPI entrypoint and runs the frontend build.
+3. Add these Vercel Environment Variables for Production and Preview:
+   - `DATABASE_URL`: Neon pooled URL (`postgresql://...`). The app converts it to the psycopg SQLAlchemy driver.
+   - `ENCRYPTION_SECRET`: a long, unique secret. Keep this value stable so stored Gmail tokens remain decryptable.
+   - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`: your Google Cloud Web application OAuth credentials.
+   - `GOOGLE_REDIRECT_URI`: `https://<your-vercel-domain>/gmail-connect`.
+4. In Google Cloud Console, add `https://<your-vercel-domain>` as an Authorized JavaScript origin and `https://<your-vercel-domain>/gmail-connect` as an Authorized redirect URI. Enable the Gmail API and add your account as an OAuth test user if the consent screen is in Testing mode.
+5. Deploy from Vercel. The frontend uses same-origin `/api` requests; no `VITE_API_BASE_URL` is needed. The API remains available at `/api` and Swagger at `/docs`.
+
+Optional integration variables include `GOOGLE_PUBSUB_TOPIC`, `GMAIL_ADDON_API_KEY`, and `AI_API_KEY`. A new Neon database is initialized on first startup; existing Render SQLite records are not automatically copied.
 
 ---
 

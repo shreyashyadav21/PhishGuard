@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import os
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -76,31 +77,39 @@ app.include_router(attachments.router, prefix="/api")
 app.include_router(timeline.router, prefix="/api")
 app.include_router(ai.router, prefix="/api")
 
-@app.get("/")
-def root():
-    frontend_index = FRONTEND_DIST / "index.html"
-    if frontend_index.is_file():
+if os.getenv("VERCEL"):
+    app.frontend(
+        "/",
+        directory=str(FRONTEND_DIST),
+        fallback="index.html",
+        check_dir=False,
+    )
+else:
+    @app.get("/")
+    def root():
+        frontend_index = FRONTEND_DIST / "index.html"
+        if frontend_index.is_file():
+            return FileResponse(frontend_index)
+        return {
+            "platform": "PhishGuard",
+            "description": "AI-Powered Phishing Detection & Threat Intelligence Platform",
+            "status": "operational",
+            "api_docs": "/docs"
+        }
+
+    @app.get("/{path:path}")
+    def serve_frontend(path: str):
+        if path == "api" or path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not Found")
+
+        frontend_index = FRONTEND_DIST / "index.html"
+        if not frontend_index.is_file():
+            raise HTTPException(status_code=404, detail="Not Found")
+
+        frontend_root = FRONTEND_DIST.resolve()
+        requested_file = (FRONTEND_DIST / path).resolve()
+        if not requested_file.is_relative_to(frontend_root):
+            raise HTTPException(status_code=404, detail="Not Found")
+        if requested_file.is_file():
+            return FileResponse(requested_file)
         return FileResponse(frontend_index)
-    return {
-        "platform": "PhishGuard",
-        "description": "AI-Powered Phishing Detection & Threat Intelligence Platform",
-        "status": "operational",
-        "api_docs": "/docs"
-    }
-
-@app.get("/{path:path}")
-def serve_frontend(path: str):
-    if path == "api" or path.startswith("api/"):
-        raise HTTPException(status_code=404, detail="Not Found")
-
-    frontend_index = FRONTEND_DIST / "index.html"
-    if not frontend_index.is_file():
-        raise HTTPException(status_code=404, detail="Not Found")
-
-    frontend_root = FRONTEND_DIST.resolve()
-    requested_file = (FRONTEND_DIST / path).resolve()
-    if not requested_file.is_relative_to(frontend_root):
-        raise HTTPException(status_code=404, detail="Not Found")
-    if requested_file.is_file():
-        return FileResponse(requested_file)
-    return FileResponse(frontend_index)
