@@ -132,7 +132,7 @@ The backend serves the built frontend at `/` and continues to expose the API at 
 Vercel runs the FastAPI backend as a Python Function and serves the React frontend from the same domain. Neon PostgreSQL provides persistent storage; SQLite is not suitable for Vercel Functions.
 
 1. Create a Neon PostgreSQL database and copy its pooled connection string.
-2. Import this repository into Vercel with the repository root as the project root. The root `pyproject.toml` selects the FastAPI entrypoint and runs the frontend build.
+2. Import this repository into Vercel with the repository root as the project root. The root `pyproject.toml` selects the FastAPI entrypoint and runs the frontend build. Vercel installs Python packages from the root `requirements.txt`, which mirrors `backend/requirements.txt`.
 3. Add these Vercel Environment Variables for Production and Preview:
    - `DATABASE_URL`: Neon pooled URL (`postgresql://...`). The app converts it to the psycopg SQLAlchemy driver.
    - `ENCRYPTION_SECRET`: a long, unique secret. Keep this value stable so stored Gmail tokens remain decryptable.
