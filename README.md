@@ -4,8 +4,6 @@ PhishGuard is an integrated, enterprise-grade cybersecurity command center and t
 
 Operating on a **Zero-SSRF static analysis model**, PhishGuard inspects payloads without initiating outbound network connections, delivers explainable risk scores (0–100), provides user-controlled email quarantine actions, and includes a Manifest V3 extension for Chromium browsers such as Brave and Chrome, plus a Gmail Workspace add-on for contextual verdicts on desktop and mobile.
 
-## Website working 
-https://phishguard-h88c.onrender.com
 
 ---
 
